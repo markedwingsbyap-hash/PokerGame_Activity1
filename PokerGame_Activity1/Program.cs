@@ -17,6 +17,10 @@ class Program
         string[] suits = { "Diamonds", "Hearts", "Clubs", "Spades" };
         Random rand = new Random();
 
+
+        // list para sa scoreboard (for commit and push)
+        List<string> scoreboard = new List<string>();
+
         Console.WriteLine("[ WELCOME TO THE CONSOLE POKER GAME ]");
         Console.Write("Please enter your name: ");
         string name = Console.ReadLine();
@@ -51,14 +55,28 @@ class Program
 
         int balance = 500;
         bool playAgain = true;
+        int roundNumber = 1; //to keep track of the history of rounds played
 
         // Main Game Loop
         while (playAgain)
         {
+
+            //the added new feature (For Push and commit)
             Console.Clear();
+            if (scoreboard.Count > 0)
+            {
+                Console.WriteLine("=== GAME SCOREBOARD HISTORY ===");
+                foreach (string record in scoreboard)
+                {
+                    Console.WriteLine(record);
+                }
+                Console.WriteLine("===============================\n");
+            }
+
             Console.WriteLine("========================================");
             Console.WriteLine($"Player: {name} | Balance: {balance} coins");
             Console.WriteLine("========================================");
+            int initialCoinsThisRound = balance;
             Console.WriteLine("Deducting 100 coins for this round...");
             balance -= 100;
 
@@ -78,11 +96,13 @@ class Program
             // Deal 5 random cards
             Console.WriteLine("\nDealing your hand...");
             Card[] hand = new Card[5];
+            string handCardsString = "";
             for (int i = 0; i < 5; i++)
             {
                 int rindex = rand.Next(52);
                 hand[i] = deck[rindex];
                 Console.WriteLine($" -> {hand[i].value} of {hand[i].suit}");
+                handCardsString += hand[i].value + " of " + hand[i].suit + (i < 4 ? ", " : "");
             }
 
             // Analyze Hand
@@ -130,6 +150,12 @@ class Program
             }
             Console.WriteLine($"New Balance: {balance} coins");
             Console.WriteLine("-----------------------------");
+
+            // ADDED FEATURE: Pag-compile ng data para sa history entry (changes for push and commit)
+
+            string historyEntry = $"Round {roundNumber}: [Coins: {initialCoinsThisRound}] -> Cards: [{handCardsString}] -> Result: {handName} -> Updated Balance: {balance}";
+            scoreboard.Add(historyEntry);
+            roundNumber++;
 
             // Check if bankrupt na yung user
             if (balance < 100)
