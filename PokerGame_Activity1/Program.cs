@@ -11,6 +11,8 @@ class Program
 
     static void Main()
     {
+        // ACTIVITY 1: CONSOLE POKER GAME
+
         string[] values = { "Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King" };
         string[] suits = { "Diamonds", "Hearts", "Clubs", "Spades" };
         Random rand = new Random();
